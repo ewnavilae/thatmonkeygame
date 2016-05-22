@@ -1,0 +1,114 @@
+.keyboard{
+  user-select: none;
+  background: white;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.warning{
+  text-align: center;
+  font-weight: 300;
+  color: #009900;
+}
+
+.row{
+  display: flex;
+  align-items: center;
+  font-size: 30px;
+}
+
+.keys{
+  border: 1px solid gray;
+  padding: 15px;
+}
+
+.key{
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 40px;
+  color: #000000;
+  background: #888888;
+  padding-left: 2px;
+  padding-bottom: 15px;
+  padding-right: 15px;
+  border: 1px solid black;
+  margin: 2px;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+}
+
+@media screen and (max-width:1500px){
+  .key{
+    font-size: 25px;
+    width: 45px;
+    height: 45px;
+  }
+}
+
+.keyDown{
+  background: white;
+}
+
+.locked{
+  background: #AA0000;
+  font-weight: 700;
+}
+
+.menuVisible{
+  position: relative;
+  border: 1px solid red;
+}
+
+.keyMenu{
+  font-size: 20px;
+  font-weight: 300;
+  background: white;
+  border: 10px solid #77dd77;
+  padding: 17px;
+  border-radius: 50px;
+  position: relative;
+  min-width:100px;
+  left: 50%;
+  top: -50%;
+  transform: translate(-50%, -100%);
+  color:black;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1000;
+}
+
+.keyMenuTitle, .keyBuy, .keyMenuPrice{
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.keyExpensive{
+  color: #dd7777;
+}
+.keyAffordable{
+  color: #77dd77;
+}
+.keyClose:hover{
+  background: gray!important;
+  color: white;
+}
+
+.keyAffordable:hover{
+  color: black;
+}
+
+.row_1{
+  padding-left: 20px;
+}
+
+.row_2{
+  padding-left: 35px;
+}

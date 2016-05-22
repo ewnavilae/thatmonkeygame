@@ -1,0 +1,91 @@
+{
+  "name": "That monkey game",
+  "version": "1.0.0",
+  "description": "That Monkey Game",
+  "main": "Game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:ewnavilae/thatmonkeygame.git",
+  },
+  "author": "Ewna Vilae",
+  "license": "APL",
+  "homepage": "http://thatmonkeygame.com",
+  "dependencies": {
+    "autoprefixer-core": "^6.0.1",
+    "babel": "^6.1.18",
+    "babel-cli": "^6.2.0",
+    "babel-eslint": "^6.0.4",
+    "babel-preset-es2015": "^6.1.18",
+    "babel-preset-react": "^6.1.18",
+    "compression": "^1.6.1",
+    "css-loader": "^0.23.1",
+    "eslint": "^2.9.0",
+    "eslint-plugin-react": "^5.1.1",
+    "express": "^4.13.4",
+    "html-webpack-plugin": "^2.16.1",
+    "immutable": "^3.8.1",
+    "lorem-ipsum": "^1.0.3",
+    "numeral": "^1.5.3",
+    "postcss-loader": "^0.9.1",
+    "postcss-normalize": "^0.2.0",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "react-motion": "^0.4.3",
+    "react-redux": "^4.0.0",
+    "react-tabs": "^0.5.3",
+    "react-transform-hmr": "^1.0.4",
+    "redux": "^3.0.4",
+    "redux-logger": "^2.6.1",
+    "redux-storage": "^1.4.3",
+    "style-loader": "^0.13.1"
+  },
+  "babel": {
+    "presets": [
+      "es2015-loose",
+      "react",
+      "stage-0"
+    ],
+    "plugins": [
+      "transform-object-rest-spread",
+      "transform-export-extensions",
+      "transform-class-properties",
+      "transform-class-constructor-call"
+    ],
+    "env": {
+      "development": {
+        "plugins": [
+          [
+            "react-transform",
+            {
+              "transforms": [
+                {
+                  "transform": "react-transform-hmr",
+                  "imports": [
+                    "react"
+                  ],
+                  "locals": [
+                    "module"
+                  ]
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "devDependencies": {
+    "babel-loader": "^6.2.1",
+    "babel-plugin-react-transform": "^2.0.2",
+    "babel-preset-es2015-loose": "^7.0.0",
+    "babel-preset-stage-0": "^6.1.18",
+    "eslint": "^2.10.2",
+    "redux-thunk": "^1.0.0",
+    "webpack": "^1.12.9",
+    "webpack-dev-middleware": "^1.4.0",
+    "webpack-hot-middleware": "^2.5.1"
+  }
+}

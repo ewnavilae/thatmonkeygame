@@ -1,0 +1,27 @@
+.dialValue{
+  align-self: flex-end;
+  height: 44px;
+  position: relative;
+  text-align: center;
+  color: black;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.value, .dialFill{
+  pointer-events: none;
+}
+
+.value{
+  z-index: 10;
+  position: relative;
+}
+
+.dialFill{
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: gray;
+}

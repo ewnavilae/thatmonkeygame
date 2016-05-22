@@ -1,0 +1,92 @@
+.monkeys{
+  flex: 1;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: 300;
+  overflow: auto;
+}
+
+.monkey{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 5px solid #cccccc;
+}
+
+.notification{
+  position: absolute;
+  transform: translate(0, 0);
+  pointer-events: none;
+}
+
+.monkeyName{
+  font-weight: 700;
+  color: #aaaaaa;
+  font-size: 22px;
+}
+
+.monkeyAmount{
+  font-size: 24px;
+  font-weight: 700;
+  color: #afafaf;
+  display: flex;
+}
+
+.monkeyAmountLabel{
+  font-size: 18px;
+  font-weight: 400;
+  color: #afafaf;
+}
+
+.monkeyPrice{
+  font-size: 20px;
+  font-weight: 700;
+  color: #afafaf;
+}
+
+.monkeyPriceLabel{
+  font-size: 18px;
+  font-weight: 400;
+  color: #afafaf;
+}
+
+.monkeyPreview{
+  font-weight: 400;
+  color: #666666;
+}
+
+.notification img{
+  width: 100px;
+  /*transform: translate(-100px, 0);*/
+}
+
+.monkeyAmount{
+  align-self: flex-end;
+  padding-bottom: 5px;
+}
+
+.monkeyPrice{
+  padding-top: 5px;
+  align-self: flex-start;
+}
+
+.monkeyPriceValue{
+  font-weight: 700;
+}
+.monkeyPriceExpensive{
+  color: #dd7777;
+}
+.monkeyPriceAffordable{
+  color: #77dd77;
+}
+
+.buyMonkey{
+   align-self: flex-end;
+   cursor: pointer;
+   border: 2px solid gray;
+   padding: 10px 50px;
+   color: #333333;
+   font-weight: 600;
+ }
