@@ -51,11 +51,13 @@ const monkeyPriceStyles = ( { points, price, amount } ) => {
 const maxAffordable = ( priceFunction, amount, points ) => {
   let currAmount = amount
   let currPoints = points
+  let canBuy = 0
   while ( currPoints >= 0 && priceFunction( currAmount ) <= currPoints ) {
     currPoints -= priceFunction( currAmount )
     currAmount++
+    canBuy++
   }
-  return currAmount - amount
+  return canBuy
 }
 
 export default class Monkey extends Component {

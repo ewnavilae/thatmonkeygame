@@ -61,14 +61,14 @@ export let monkeys = [
     notifications: [],
   },
   {
-    name: "Nerd",
-    description: "On his way to being the bully's boss, but still making games. Clicks 20 keys every second",
+    name: "Super Nerd",
+    description: "The bully's boss, enjoying himself by making games! Clicks 30 keys twice a second",
     condition: game => game.get( "unlocked" ).size > 11,
     amountPerTick: ( index, { props: { game, pointsPerMonkeyPress } } ) =>
-      pointsPerMonkeyPress * 20 * ( game.getIn( [ "monkeys", index ] ) || 0 ),
-    interval: 1000,
+      pointsPerMonkeyPress * 30 * ( game.getIn( [ "monkeys", index ] ) || 0 ),
+    interval: 500,
     price: ( monkeyAmount ) => Math.round( 10000 * ( 1.19 ** ( monkeyAmount ) ) ),
-    preview: () => "12 should be enough to make him at home.",
+    preview: () => "Reach 12 keys to see who's boss",
     notifications: [],
   },
 ]
