@@ -1,6 +1,7 @@
 .dialValue{
   align-self: flex-end;
-  height: 44px;
+  height: 46px;
+  min-width: 60px;
   position: relative;
   text-align: center;
   color: black;

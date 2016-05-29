@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { monkeys } from "./monkeys"
+import monkeys from "game/monkeys"
 import Monkey from "./monkey"
 import * as styles from "./styles.css"
 
@@ -16,6 +16,7 @@ export default class Monkeys extends Component {
 
   props:{
     game: any,
+    pointsPerMonkeyPress: number,
     actions:{
       buyMonkey: ( id: number, price: number ) => void,
       addPoints: ( points: number ) => void,
@@ -48,7 +49,7 @@ export default class Monkeys extends Component {
     }, addBit )
   }
 
-  shouldComponentUpdate ( nextProps, nextState ) {
+  shouldComponentUpdate ( /* nextProps, nextState */ ) {
     return true
   }
 
@@ -74,11 +75,12 @@ export default class Monkeys extends Component {
   }
 
   render () {
-    const { game, actions: { buyMonkey } } = this.props
+    const { game, pointsPerMonkeyPress, actions: { buyMonkey } } = this.props
     const { notifications } = this.state
     return (
       <div className={styles.monkeys}>
         {monkeys.map( monkeyRenderer( {
+          pointsPerMonkeyPress,
           game,
           notifications,
           buyMonkey, // : ( args ) => buyMonkey( ...args ),

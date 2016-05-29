@@ -1,3 +1,5 @@
+import { CODE_MONKEY_UPGRADE, DEV_MONKEY_UPGRADE, APE_UPGRADE, HUMAN_UPGRADE } from "game/upgrades/monkey"
+
 const getUpgradeTier = ( game, upgradeType ) => {
   const pressUpgrades = game.get( "upgrades" ).filter( upgrade => upgrade.get( "type" ) === upgradeType )
   let upgradeTier = 0
@@ -10,7 +12,7 @@ const getUpgradeTier = ( game, upgradeType ) => {
   return upgradeTier
 }
 
-export let monkeys = [
+export default [
   {
     name: "Code Monkey",
     description:
@@ -19,9 +21,9 @@ export let monkeys = [
     amountPerTick: ( index, { props: { pointsPerMonkeyPress, game } } ) =>
       ( pointsPerMonkeyPress *
         ( game.getIn( [ "monkeys", index ] ) || 0 )
-      ) * ( 2 ** getUpgradeTier( game, "CODE_MONKEY_UPGRADE" ) ),
+      ) * ( 2 ** getUpgradeTier( game, CODE_MONKEY_UPGRADE ) ),
     interval: 2000,
-    price: ( monkeyAmount ) => Math.round( 15 * ( 1.12 ** ( monkeyAmount ) ) ),
+    price: ( monkeyAmount ) => Math.round( 15 * ( 1.145 ** ( monkeyAmount ) ) ),
     preview: () => "You can almost unlock your first Code Monkey! You need at least 2 keys.",
     notifications: [],
   },
@@ -31,7 +33,7 @@ export let monkeys = [
     condition: game => game.get( "unlocked" ).size > 3,
     amountPerTick: ( index, { props: { game, pointsPerMonkeyPress } } ) =>
       pointsPerMonkeyPress * 3 * ( game.getIn( [ "monkeys", index ] ) || 0 ) * (
-        ( 2 ** getUpgradeTier( game, "DEV_MONKEY_UPGRADE" ) )
+        ( 2 ** getUpgradeTier( game, DEV_MONKEY_UPGRADE ) )
       ),
     interval: 2000,
     price: ( monkeyAmount ) => Math.round( 150 * ( 1.15 ** ( monkeyAmount ) ) ),
@@ -40,10 +42,12 @@ export let monkeys = [
   },
   {
     name: "Code Ape",
-    description: "This monkey will smash some keys in hope of making quality code! Clicks four keys every second!",
+    description: "This monkey will smash some keys in hope of making quality code! Clicks five keys every second!",
     condition: game => game.get( "unlocked" ).size > 5,
     amountPerTick: ( index, { props: { game, pointsPerMonkeyPress } } ) =>
-      pointsPerMonkeyPress * 4 * ( game.getIn( [ "monkeys", index ] ) || 0 ),
+      pointsPerMonkeyPress * 5 * ( game.getIn( [ "monkeys", index ] ) || 0 ) * (
+        ( 2 ** getUpgradeTier( game, APE_UPGRADE ) )
+      ),
     interval: 1000,
     price: ( monkeyAmount ) => Math.round( 300 * ( 1.16 ** ( monkeyAmount ) ) ),
     preview: () => "6 keys to make this crazy monkey happy.",
@@ -51,10 +55,12 @@ export let monkeys = [
   },
   {
     name: "Human",
-    description: "This monkey believes it has free will and creative power! It will click 10 keys every second!",
+    description: "This monkey believes it has free will and creative power! It will click 15 keys every second!",
     condition: game => game.get( "unlocked" ).size > 8,
     amountPerTick: ( index, { props: { game, pointsPerMonkeyPress } } ) =>
-      pointsPerMonkeyPress * 10 * ( game.getIn( [ "monkeys", index ] ) || 0 ),
+      pointsPerMonkeyPress * 15 * ( game.getIn( [ "monkeys", index ] ) || 0 ) * (
+        ( 2 ** getUpgradeTier( game, HUMAN_UPGRADE ) )
+      ),
     interval: 1000,
     price: ( monkeyAmount ) => Math.round( 1000 * ( 1.17 ** ( monkeyAmount ) ) ),
     preview: () => "9 keys should be enough to keep the human at the keyboard all day.",
@@ -62,12 +68,12 @@ export let monkeys = [
   },
   {
     name: "Super Nerd",
-    description: "The bully's boss, enjoying himself by making games! Clicks 30 keys twice a second",
+    description: "The bully's boss, enjoying himself by making games! Clicks 50 keys twice a second",
     condition: game => game.get( "unlocked" ).size > 11,
     amountPerTick: ( index, { props: { game, pointsPerMonkeyPress } } ) =>
-      pointsPerMonkeyPress * 30 * ( game.getIn( [ "monkeys", index ] ) || 0 ),
+      pointsPerMonkeyPress * 50 * ( game.getIn( [ "monkeys", index ] ) || 0 ),
     interval: 500,
-    price: ( monkeyAmount ) => Math.round( 10000 * ( 1.19 ** ( monkeyAmount ) ) ),
+    price: ( monkeyAmount ) => Math.round( 50000 * ( 1.19 ** ( monkeyAmount ) ) ),
     preview: () => "Reach 12 keys to see who's boss",
     notifications: [],
   },

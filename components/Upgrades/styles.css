@@ -17,8 +17,7 @@
 
 .upgrade{
   cursor: pointer;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding: 5px 5px;
   border-bottom: 1px solid #cccccc;
 }
 

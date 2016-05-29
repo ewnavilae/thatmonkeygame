@@ -24,6 +24,7 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new webpack.optimize.CommonsChunkPlugin( "shared.js" ),
     new webpack.DefinePlugin( {
+      __DEV__: true,
       __LIVE__: process.env.LIVE ? true : false,
       "process.env": { NODE_ENV: "\"development\"" },
     } ),

@@ -27,7 +27,7 @@ module.exports = {
       inject: false,
     } ),
     new webpack.DefinePlugin( {
-      __DEV__: false,
+      __DEV__: process.env.DEV ? true : false,
       __LIVE__: false,
       "process.env": {
         NODE_ENV: "\"production\"",

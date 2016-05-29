@@ -1,0 +1,58 @@
+.profile, .upgrades, .list{
+  display: flex;
+  flex-direction: column;
+}
+
+.profile{
+  padding: 10px 10px;
+}
+
+.stats{
+  padding-bottom: 15px;
+}
+
+.title{
+  font-weight: 400;
+  color: #777;
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #cccccc;
+  margin-bottom: 10px;
+  cursor: default;
+  user-select: none;
+}
+
+.upgrade, .statsRow{
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  margin: 5px 0px;
+  user-select: none;
+}
+
+.upgrade > div, .statsRow {
+  padding: 3px 5px;
+  cursor: default;
+}
+
+.upgrade:nth-child(odd), .statsRow:nth-child(odd){
+  background: #ccc;
+}
+
+.upgrade:nth-child(even), .statsRow:nth-child(even){
+  background: #eee;
+}
+
+.upgradeName, .statsLabel{
+  flex: 2.5;
+}
+
+.upgradeShort, .statsValue{
+  flex: 2;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.statsRow{
+  display: flex;
+}

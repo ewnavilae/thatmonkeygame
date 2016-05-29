@@ -40,7 +40,7 @@ const renderKey = ( { points, keys, toggleKeyMenu, unlockKey, keyCost } ) => key
     { keys[ key ].menu ? (
       <div className={styles.keyMenu}>
         <div className={styles.keyMenuTitle}>{key.toString()}</div>
-        <div className={styles.keyMenuPrice}>{roundTo( keyCost, 2 )}</div>
+        <div className={styles.keyMenuPrice}>{roundTo( keyCost, 0 )}</div>
         <div className={`${ styles.keyBuy } ${ points >= keyCost ? styles.keyAffordable : styles.keyExpensive }`}
           onClick={() => unlockKey( key )}
         >
@@ -108,7 +108,7 @@ export default class Keyboard extends Component {
 
   unlockKey = ( keyCode ) => {
     const { unlockKey } = this.props
-    unlockKey( keyCode, this.keyCost() )
+    unlockKey( keyCode, Math.round( this.keyCost() ) )
   }
 
   keyDown ( event ) {
@@ -167,7 +167,8 @@ export default class Keyboard extends Component {
 
   keyCost () {
     const { keys } = this.state
-    return 10 * ( 1.20 ** ( countUnlocked( keys ) * 4 ) )
+    const keyCount = countUnlocked( keys )
+    return 10 * ( 1.20 ** ( ( keyCount < 11 ? keyCount : keyCount * 1.2 ) * 4 ) )
   }
 
   shouldComponentUpdate ( nextProps, nextState ) {

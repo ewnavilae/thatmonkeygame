@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { monkeys } from "./monkeys"
+import monkeys from "game/monkeys"
 import { roundTo } from "helpers"
 import { Motion, spring } from "react-motion"
 import { DialValue } from "components"
@@ -111,21 +111,24 @@ export default class Monkey extends Component {
     this.setState( { showDial: false } )
   }
 
+  Buy ( value ) {
+    return (
+      <div
+        className={styles.buyMonkey}
+        onMouseEnter={() => this.mouseInBuy()}
+      >
+        <div className={styles.buyText}>BUY</div>
+        <div className={styles.buyAmount}>{value}</div>
+      </div>
+    )
+  }
+
   render () {
     const { monkey, game, index, points, notifications } = this.props
     const { showDial } = this.state
 
     const monkeyAmount = game.getIn( [ "monkeys", index ] ) || 0
     const _maxAffordable = maxAffordable( monkey.price, monkeyAmount, points )
-
-    const Buy = ( value ) => (
-      <div
-        className={styles.buyMonkey}
-        onMouseEnter={() => this.mouseInBuy()}
-      >
-        BUY {value}
-      </div>
-    )
 
     return monkey.condition( game ) || firstLockedMonkey( index, game, monkey ) ? (
         <div className={styles.monkey}>
@@ -138,6 +141,13 @@ export default class Monkey extends Component {
                 {roundTo( monkey.price( monkeyAmount ), 2 )}
               </span>
               <span className={styles.monkeyPriceLabel}> pts.</span>
+              <span className={styles.monkeyKPSLabel}>Keys per monkey per second: </span>
+              <span className={styles.monkeyKPSValue}>
+                {roundTo( ( monkey.amountPerTick( index, this ) / game.getIn( [ "monkeys", index ] ) || 0 ) * (
+                  1000 / monkey.interval
+                ), 2 )}
+              </span>
+              <span className={styles.monkeyKPSUnit}> pts.</span>
               </div> ),
             ( <div className={styles.monkeyAmount}>
                 {monkeyAmount}
@@ -148,8 +158,8 @@ export default class Monkey extends Component {
               click={( value ) => this.purchaseX( value )}
               close={() => this.mouseLeave()}
             >
-              { Buy }
-            </DialValue> : ( Buy() )
+              { this.Buy }
+            </DialValue> : ( this.Buy() )
           ), ( notifications.toJS().map( notificationRenderer ) ),
           ] ) : firstLockedMonkey( index, game, monkey ) }
         </div>

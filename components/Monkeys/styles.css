@@ -46,10 +46,14 @@
   color: #afafaf;
 }
 
-.monkeyPriceLabel{
+.monkeyPriceLabel, .monkeyKPSLabel, .monkeyKPSUnit{
   font-size: 18px;
   font-weight: 400;
   color: #afafaf;
+}
+
+.monkeyKPSLabel{
+  padding-left: 20px;
 }
 
 .monkeyPreview{
@@ -72,13 +76,13 @@
   align-self: flex-start;
 }
 
-.monkeyPriceValue{
+.monkeyPriceValue, .monkeyKPSValue{
   font-weight: 700;
 }
 .monkeyPriceExpensive{
   color: #dd7777;
 }
-.monkeyPriceAffordable{
+.monkeyPriceAffordable, .monkeyKPSValue{
   color: #77dd77;
 }
 
@@ -89,4 +93,11 @@
    padding: 10px 50px;
    color: #333333;
    font-weight: 600;
+   min-width: 60px;
+   display: flex;
+   justify-content:center;
+ }
+
+ .buyAmount{
+   padding-left: 5px;
  }

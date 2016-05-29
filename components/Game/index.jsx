@@ -1,6 +1,7 @@
+/* globals __DEV__ */
 import React, { Component } from "react"
-import { Keyboard, Monkeys, Upgrades } from "components"
-import { PLAYER_PRESS_UPGRADE } from "components/Upgrades"
+import { Keyboard, Monkeys, Upgrades, Profile } from "components"
+import { KEYBOARD_UPGRADE } from "game/upgrades/keyboard"
 import { roundTo } from "helpers"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import loremIpsum from "lorem-ipsum"
@@ -46,7 +47,7 @@ export default class Game extends Component {
 
   pointsPerAdd = () => {
     const { game } = this.props
-    const pressUpgrades = game.get( "upgrades" ).filter( upgrade => upgrade.get( "type" ) === PLAYER_PRESS_UPGRADE )
+    const pressUpgrades = game.get( "upgrades" ).filter( upgrade => upgrade.get( "type" ) === KEYBOARD_UPGRADE )
     let upgradeTier = 0
     if ( pressUpgrades.size > 0 ) {
       upgradeTier = pressUpgrades
@@ -55,7 +56,7 @@ export default class Game extends Component {
       .first().get( "tier" )
     }
 
-    return 1 * ( 2 ** upgradeTier )
+    return 2 ** upgradeTier
   }
 
 
@@ -140,7 +141,8 @@ export default class Game extends Component {
             <TabList className={styles.tabList}>
               <Tab className={styles.tabTitle}>Monkeys</Tab>
               <Tab className={styles.tabTitle}>Upgrades</Tab>
-              <Tab className={styles.tabTitle}>Dev</Tab>
+              <Tab className={styles.tabTitle}>Profile</Tab>
+              {__DEV__ ? <Tab className={styles.tabTitle}>Dev</Tab> : null }
             </TabList>
             <TabPanel className={styles.tab}>
               <Monkeys
@@ -157,9 +159,18 @@ export default class Game extends Component {
               />
             </TabPanel>
             <TabPanel className={styles.tab}>
-              Dev stuff
-              <div onClick={() => resetInitialState()}>Reset entire game</div>
+              <Profile
+                game={game}
+                pointsPerAdd={this.pointsPerAdd()}
+                pointsPerMonkeyPress={this.pointsPerMonkeyPress()}
+              />
             </TabPanel>
+            {__DEV__ ? (
+              <TabPanel className={styles.tab}>
+                Dev stuff
+                <div onClick={() => resetInitialState()}>Reset entire game</div>
+              </TabPanel>
+            ) : null}
           </Tabs>
         </div>
       </div>
