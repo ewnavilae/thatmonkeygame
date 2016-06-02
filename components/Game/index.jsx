@@ -158,7 +158,7 @@ export default class Game extends Component {
   render () {
     const {
       addPoints,
-      state: { keysPerSecond, gameWidth, menu, reward/* , notifications */ },
+      state: { keysPerSecond, gameWidth, menu, reward, difference/* , notifications */ },
       props: { unlocked, points, game, actions: { unlockKey, resetInitialState }, actions },
     } = this
 
@@ -169,7 +169,9 @@ export default class Game extends Component {
           <span onClick={() => this.setState( { menu: !menu } )} className={styles.menuButton}>|||</span>
         ) : null }
         <div onClick={() => menu ? this.setState( { menu: false } ) : null} className={styles.left}>
-          { reward ? <div onClick={() => this.earnReward()}>Click to earn reward of {reward}!</div> : null }
+          { reward ? <div onClick={() => this.earnReward()}>
+            Click to earn reward of {reward} for {Math.round( difference / 1000 )} seconds offline!
+          </div> : null }
           <div className={styles.points}>
             <span className={styles.pointsValue}>{roundTo( points, 0 )}</span> points!<br/>
             <span className={styles.kpsValue}>{roundTo( keysPerSecond, 2 )}</span>
