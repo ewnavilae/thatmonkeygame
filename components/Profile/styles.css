@@ -5,6 +5,7 @@
 
 .profile{
   padding: 10px 10px;
+  overflow: auto;
 }
 
 .stats{
@@ -25,9 +26,11 @@
 .upgrade, .statsRow{
   display: flex;
   justify-content: space-between;
+  align-items: center;
   text-align: left;
   margin: 5px 0px;
   user-select: none;
+  min-height: 30px;
 }
 
 .upgrade > div, .statsRow {

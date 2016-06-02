@@ -1,10 +1,11 @@
 {
-  "name": "That monkey game",
+  "name": "that-monkey-game",
   "version": "1.0.0",
   "description": "That Monkey Game",
   "main": "Game.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js $1"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "html-webpack-plugin": "^2.16.1",
     "immutable": "^3.8.1",
     "lorem-ipsum": "^1.0.3",
+    "moment": "^2.13.0",
     "numeral": "^1.5.3",
     "postcss-loader": "^0.9.1",
     "postcss-normalize": "^0.2.0",

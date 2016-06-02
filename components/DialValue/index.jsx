@@ -31,6 +31,7 @@ export default class DialValue extends Component {
   }
 
   mouseEnter () {
+    debugger
     this.setState( { mouseEnterTime: Date.now(), mouseIn: true } )
   }
 
@@ -69,8 +70,11 @@ export default class DialValue extends Component {
         className={styles.dialValue}
         onClick={() => click ? click( displayValue ) : null}
         onMouseEnter={( event ) => this.mouseEnter( event )}
+        onTouchStart={( event ) => this.mouseEnter( event )}
         onMouseMove={( event ) => this.mouseMove( event )}
+        onTouchMove={( event ) => this.mouseMove( event )}
         onMouseLeave={( event ) => this.mouseLeave( event )}
+        onTouchEnd={( event ) => this.mouseLeave( event )}
       >
         <div style={{ width: mouseX }} className={styles.dialFill}/>
         <div className={styles.value}>{children ? children( displayValue ) : displayValue }</div>

@@ -6,6 +6,7 @@ const initialState = fromJS( {
   totalPoints: 0,
   totalKeys: 0,
   money: 0,
+  time: null,
   unlocked: {
     q: {
       unlocked: true,
@@ -16,6 +17,8 @@ const initialState = fromJS( {
 } )
 
 let callbacks = {}
+
+callbacks[ gameActions.UPDATE_TIME ] = ( state, { time } ) => state.set( "time", time )
 
 callbacks[ gameActions.RESET_INITIAL_STATE ] = () => initialState
 

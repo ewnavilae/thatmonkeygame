@@ -27,10 +27,14 @@ const getKeyStyles = key => [
   key.menu ? styles.menuVisible : "",
 ].join( " " )
 
-const renderKey = ( { points, keys, toggleKeyMenu, unlockKey, keyCost } ) => key => (
+const renderKey = ( { points, keys, toggleKeyMenu, unlockKey, keyCost, keyDown, keyUp } ) => key => (
   <div
     onMouseLeave={() => toggleKeyMenu( key )}
     onMouseEnter={() => toggleKeyMenu( key )}
+    onMouseDown={() => keyDown( key )}
+    onMouseUp={() => keyUp( key )}
+    onTouchStart={() => keyDown( key )}
+    onTouchEnd={() => keyUp( key )}
     key={key}
     className={getKeyStyles( keys[ key ] )}
   >
@@ -113,7 +117,7 @@ export default class Keyboard extends Component {
 
   keyDown ( event ) {
     const { keys } = this.state
-    const charCode = String.fromCharCode( event.which ).toLowerCase()
+    const charCode = event.which ? String.fromCharCode( event.which ).toLowerCase() : event
     const key = keys[ charCode ]
     if ( ~validKeys.indexOf( charCode ) && !key.pressed && key.unlocked ) {
       const { addPoints } = this.props
@@ -128,12 +132,12 @@ export default class Keyboard extends Component {
       } )
       addPoints()
     }
-    event.preventDefault()
+    event.preventDefault && event.preventDefault()
   }
 
   keyUp ( event ) {
     const { keys } = this.state
-    const charCode = String.fromCharCode( event.which ).toLowerCase()
+    const charCode = event.which ? String.fromCharCode( event.which ).toLowerCase() : event
     const key = keys[ charCode ]
     if ( ~validKeys.indexOf( charCode ) && key.pressed ) {
       this.setState( {
@@ -146,7 +150,7 @@ export default class Keyboard extends Component {
         },
       } )
     }
-    event.preventDefault()
+    event.preventDefault && event.preventDefault()
   }
   componentWillMount () {
     const { unlocked } = this.props
@@ -201,6 +205,8 @@ export default class Keyboard extends Component {
             toggleKeyMenu: this.toggleKeyMenu,
             unlockKey: this.unlockKey,
             keyCost: this.keyCost(),
+            keyDown: key => this.keyDown( key ),
+            keyUp: key => this.keyUp( key ),
           } ) ) }
         </div>
       </div>

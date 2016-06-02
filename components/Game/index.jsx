@@ -1,10 +1,12 @@
 /* globals __DEV__ */
 import React, { Component } from "react"
+import monkeys from "game/monkeys"
 import { Keyboard, Monkeys, Upgrades, Profile } from "components"
 import { KEYBOARD_UPGRADE } from "game/upgrades/keyboard"
 import { roundTo } from "helpers"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import loremIpsum from "lorem-ipsum"
+import moment from "moment"
 
 const VISIBLE_LENGTH = 70
 const FPS = 1000
@@ -26,6 +28,8 @@ export default class Game extends Component {
 
   state={
     keysPerSecond: 0,
+    menu: null,
+    gameWidth: null,
   }
 
   props:{
@@ -38,6 +42,7 @@ export default class Game extends Component {
       resetInitialState: () => void,
       addPoints: ( points:number ) => void,
       unlockKey: ( key:string, price:number ) => void,
+      updateTime: ( time:number ) => void,
     }
   };
 
@@ -83,16 +88,30 @@ export default class Game extends Component {
       await fetch( "https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xap1/t39.3284-6/13065892_243502592679528_80343462_n.js" ) //eslint-disable-line
     ).text()
     this.setState( { lorem: lorem.replace( /\r?\n|\r|\s|/g, "" ) } )
-    const { points } = this.props
+    const { points, game } = this.props
+    const difference = moment( Date.now() ).diff( moment( game.get( "time" ) ), "miliseconds" )
+    let monkeyIndex = -1
+    const total = monkeys.reduce( ( aggregator, current ) => {
+      monkeyIndex++
+      return aggregator + current.amountPerTick( monkeyIndex, {
+        props: {
+          game,
+          pointsPerMonkeyPress: this.pointsPerMonkeyPress(),
+        },
+      } ) / ( current.interval / 1000 )
+    }, 0 )
+    this.setState( { reward: total * Math.round( difference / 1000 ), difference } )
     let prevPoints = points
     let readings = []
     setInterval( () => {
-      const { points } = this.props
+      const { points, actions: { updateTime } } = this.props
       readings.unshift( Math.max( 0, ( points - prevPoints ) ) )
       if ( readings.length > 20 ) {
         readings.pop()
       }
+      updateTime( Date.now() )
       this.setState( { keysPerSecond: average( readings ) * 10 || 0 } )
+
       prevPoints = points
     }, 100 )
   }
@@ -108,20 +127,53 @@ export default class Game extends Component {
 
   /* notify = (message) => {} */
 
+  setGameWidth ( game ) {
+    const rect = game ? game.getClientRects() : {}
+    if ( rect.length > 0 ) {
+      const gameWidth = rect[ 0 ].width
+      this.setState( { gameWidth, ...( gameWidth < 800 ? { menu: false } : { } ) } )
+    }
+  }
+
+  getRightStyle () {
+    const { menu } = this.state
+    if ( menu === true ) {
+      return { transform: "translate(0,0)" }
+    } else if ( menu === false ) {
+      return { transform: "translate(-100%, 0)" }
+    } else {
+      return null
+    }
+  }
+
+  earnReward () {
+    const {
+      actions: { addPoints },
+    } = this.props
+    const { reward } = this.state
+    addPoints( reward )
+    this.setState( { reward: null } )
+  }
+
   render () {
     const {
       addPoints,
-      state: { keysPerSecond/* , notifications */ },
+      state: { keysPerSecond, gameWidth, menu, reward/* , notifications */ },
       props: { unlocked, points, game, actions: { unlockKey, resetInitialState }, actions },
     } = this
 
     return (
-      <div className={styles.game}>
+      <div ref={game => !gameWidth && this.setGameWidth( game )} className={styles.game}>
         {/* <Notifications notifications={notifications}> */}
-        <div className={styles.left}>
+        { gameWidth < 800 ? (
+          <span onClick={() => this.setState( { menu: !menu } )} className={styles.menuButton}>|||</span>
+        ) : null }
+        <div onClick={() => menu ? this.setState( { menu: false } ) : null} className={styles.left}>
+          { reward ? <div onClick={() => this.earnReward()}>Click to earn reward of {reward}!</div> : null }
           <div className={styles.points}>
             <span className={styles.pointsValue}>{roundTo( points, 0 )}</span> points!<br/>
-            <span className={styles.pointsValue}>{roundTo( keysPerSecond, 2 )}</span> KPS!
+            <span className={styles.kpsValue}>{roundTo( keysPerSecond, 2 )}</span>
+            <span className={styles.kpsLabel}>KPS!</span>
           </div>
           <div className={styles.lorem}>{this.getLorem()}</div>
           <Keyboard points={game.get( "points" )} addPoints={addPoints} unlockKey={unlockKey} unlocked={unlocked}/>
@@ -132,11 +184,11 @@ export default class Game extends Component {
             scrolling="no"
             border="0"
             marginWidth="0"
-            style={{ paddingTop: 100, border: "none" }}
+            className={styles.ad}
             frameBorder="0">
           </iframe>
         </div>
-        <div className={styles.right}>
+        <div style={this.getRightStyle()} className={styles.right}>
           <Tabs forceRenderTabPanel className={styles.tabs}>
             <TabList className={styles.tabList}>
               <Tab className={styles.tabTitle}>Monkeys</Tab>
