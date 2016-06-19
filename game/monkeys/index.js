@@ -1,15 +1,21 @@
 import { CODE_MONKEY_UPGRADE, DEV_MONKEY_UPGRADE, APE_UPGRADE, HUMAN_UPGRADE } from "game/upgrades/monkey"
 
-const getUpgradeTier = ( game, upgradeType ) => {
-  const pressUpgrades = game.get( "upgrades" ).filter( upgrade => upgrade.get( "type" ) === upgradeType )
-  let upgradeTier = 0
-  if ( pressUpgrades.size > 0 ) {
-    upgradeTier = pressUpgrades
+const getUpgrade = ( game, upgradeCode ) => {
+  const upgrades = game.get( "upgrades" ).filter( upgrade => upgrade.get( "type" ) === upgradeCode )
+  let highestUpgrade = null
+  if ( upgrades.size > 0 ) {
+    highestUpgrade = upgrades
     .sortBy( upgrade => upgrade.get( "tier" ) )
     .reverse()
-    .first().get( "tier" )
+    .first()
   }
-  return upgradeTier
+  return highestUpgrade || new Map()
+}
+
+const amountPerTick = ( index, pointsPerMonkeyPress, game, upgradeCode ) => {
+  const base = pointsPerMonkeyPress * ( game.getIn( [ "monkeys", index ] ) || 0 )
+  const upgrade = getUpgrade( game, upgradeCode )
+  const modifier = upgrade.get("modifier")
 }
 
 export default [
@@ -21,7 +27,7 @@ export default [
     amountPerTick: ( index, { props: { pointsPerMonkeyPress, game } } ) =>
       ( pointsPerMonkeyPress *
         ( game.getIn( [ "monkeys", index ] ) || 0 )
-      ) * ( 2 ** getUpgradeTier( game, CODE_MONKEY_UPGRADE ) ),
+      ) * ( 2 ** getUpgrade( game, CODE_MONKEY_UPGRADE ) .get( "tier" )),
     interval: 2000,
     price: ( monkeyAmount ) => Math.round( 15 * ( 1.145 ** ( monkeyAmount ) ) ),
     preview: () => "You can almost unlock your first Code Monkey! You need at least 2 keys.",
@@ -33,7 +39,7 @@ export default [
     condition: game => game.get( "unlocked" ).size > 3,
     amountPerTick: ( index, { props: { game, pointsPerMonkeyPress } } ) =>
       pointsPerMonkeyPress * 3 * ( game.getIn( [ "monkeys", index ] ) || 0 ) * (
-        ( 2 ** getUpgradeTier( game, DEV_MONKEY_UPGRADE ) )
+        ( 2 ** getUpgrade( game, DEV_MONKEY_UPGRADE ).get( "tier" ) )
       ),
     interval: 2000,
     price: ( monkeyAmount ) => Math.round( 150 * ( 1.15 ** ( monkeyAmount ) ) ),
@@ -46,7 +52,7 @@ export default [
     condition: game => game.get( "unlocked" ).size > 5,
     amountPerTick: ( index, { props: { game, pointsPerMonkeyPress } } ) =>
       pointsPerMonkeyPress * 5 * ( game.getIn( [ "monkeys", index ] ) || 0 ) * (
-        ( 2 ** getUpgradeTier( game, APE_UPGRADE ) )
+        ( 2 ** getUpgrade( game, APE_UPGRADE ).get( "tier" ) )
       ),
     interval: 1000,
     price: ( monkeyAmount ) => Math.round( 300 * ( 1.16 ** ( monkeyAmount ) ) ),
@@ -59,7 +65,7 @@ export default [
     condition: game => game.get( "unlocked" ).size > 8,
     amountPerTick: ( index, { props: { game, pointsPerMonkeyPress } } ) =>
       pointsPerMonkeyPress * 15 * ( game.getIn( [ "monkeys", index ] ) || 0 ) * (
-        ( 2 ** getUpgradeTier( game, HUMAN_UPGRADE ) )
+        ( 2 ** getUpgrade( game, HUMAN_UPGRADE ).get( "tier" ) )
       ),
     interval: 1000,
     price: ( monkeyAmount ) => Math.round( 1000 * ( 1.17 ** ( monkeyAmount ) ) ),
