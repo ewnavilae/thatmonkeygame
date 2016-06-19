@@ -94,7 +94,7 @@ export default class Monkey extends Component {
       return true
     if ( game.get( "points" ) < monkeyPrice && nextGame.get( "points" ) >= monkeyPrice )
       return true
-    if ( !notifications.equals( nextNotifications ) )
+    if ( notifications && !notifications.equals( nextNotifications ) )
       return true
 
     return false
@@ -160,7 +160,7 @@ export default class Monkey extends Component {
             >
               { this.Buy }
             </DialValue> : ( this.Buy() )
-          ), ( notifications.toJS().map( notificationRenderer ) ),
+          ), ( notifications ? notifications.toJS().map( notificationRenderer ) : null ),
           ] ) : firstLockedMonkey( index, game, monkey ) }
         </div>
       ) : null
