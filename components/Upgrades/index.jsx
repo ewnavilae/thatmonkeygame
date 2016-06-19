@@ -1,15 +1,21 @@
 import React, { Component } from "react"
-import { roundTo } from "helpers"
+import { roundTo, objectMap } from "helpers"
 import * as styles from "./styles.css"
 import upgrades from "game/upgrades"
+import achievements from "game/achievements"
 
 const upgradePurchased = ( game, upgrade ) => game.getIn( [ "upgrades", upgrade ] ) ? true : false
+const upgradeUnlocked = ( game, upgrade ) =>
+  achievements[ upgrade.achievement ] ? achievements[ upgrade.achievement ].unlocked ( game ) : false
 
 const upgradeRenderer = ( props ) => ( upgrade ) => {
   const { game, actions: { unlockUpgrade } } = props //eslint-disable-line
-  if ( !upgrade.unlocked( game ) || upgradePurchased( game, upgrade.key ) ) return null
+  if ( !upgradeUnlocked( game, upgrade ) || upgradePurchased( game, upgrade.key ) ) return null
 
-  const sameTypeUpgrades = upgrades.filter( _upgrade => _upgrade.type === upgrade.type ).sort( ( a, b ) => a - b )
+  const sameTypeUpgrades = objectMap( upgrades, upgrade => upgrade )
+    .filter( _upgrade => _upgrade.type === upgrade.type )
+    .sort( ( a, b ) => a - b )
+
   const previous = sameTypeUpgrades.find( _upgrade => _upgrade.tier === upgrade.tier - 1 )
   if ( previous && !upgradePurchased( game, previous.key ) ) return null
   const canAfford = game.get( "points" ) >= upgrade.price
@@ -42,7 +48,7 @@ export default class Upgrades extends Component {
   render () {
     return (
       <div className={styles.upgrades}>
-        {upgrades.map( upgradeRenderer( this.props ) )}
+        { objectMap( upgrades, upgradeRenderer( this.props ) )}
       </div>
     )
   }
