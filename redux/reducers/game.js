@@ -6,18 +6,26 @@ const initialState = fromJS( {
   totalPoints: 0,
   totalKeys: 0,
   money: 0,
+  time: null,
   unlocked: {
     q: {
       unlocked: true,
     },
   },
   monkeys: [],
+  achievements: {},
   upgrades: {},
 } )
 
 let callbacks = {}
 
+callbacks[ gameActions.UPDATE_TIME ] = ( state, { time } ) => state.set( "time", time )
+
 callbacks[ gameActions.RESET_INITIAL_STATE ] = () => initialState
+
+callbacks[ gameActions.UNLOCK_ACHIEVEMENT ] = ( state, { achievement } ) =>
+  state.setIn( [ "achievements", achievement ], true )
+
 
 callbacks[ gameActions.UNLOCK_UPGRADE ] = ( state, { key, price, upgrade } ) =>
   state.get( "points" ) > price && !state.getIn( [ "upgrades", key ] ) ?

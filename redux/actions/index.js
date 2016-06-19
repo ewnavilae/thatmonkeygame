@@ -4,10 +4,22 @@ export const SET_POINTS = "SET_POINTS"
 export const ADD_POINTS = "ADD_POINTS"
 export const TAKE_POINTS = "TAKE_POINTS"
 export const UNLOCK_UPGRADE = "UNLOCK_UPGRADE"
+export const UNLOCK_ACHIEVEMENT = "UNLOCK_ACHIEVEMENT"
 export const RESET_INITIAL_STATE = "RESET_INITIAL_STATE"
+export const UPDATE_TIME = "UPDATE_TIME"
+
+export const updateTime = time => ( {
+  type: UPDATE_TIME,
+  time,
+} )
 
 export const resetInitialState = () => ( {
   type: RESET_INITIAL_STATE,
+} )
+
+export const unlockAchievement = achievement => ( {
+  type: UNLOCK_ACHIEVEMENT,
+  achievement,
 } )
 
 export const unlockUpgrade = ( upgrade ) => ( {
