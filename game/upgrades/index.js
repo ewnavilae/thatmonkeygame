@@ -10,4 +10,4 @@
 import MonkeyUpgrades from "./monkey"
 import KeyboardUpgrades from "./keyboard"
 
-export default MonkeyUpgrades.concat( KeyboardUpgrades )
+export default { ...MonkeyUpgrades, ...KeyboardUpgrades }
