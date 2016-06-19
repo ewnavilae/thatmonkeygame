@@ -1,5 +1,7 @@
 import React, { Component } from "react"
-import { roundTo } from "helpers"
+import { notifier } from "helpers"
+import { fromJS } from "immutable"
+import Key from "./Key"
 import * as styles from "./styles.css"
 
 // const random = ( ) => Math.random() <= Math.random()
@@ -20,38 +22,8 @@ const generateKeys = ( unlocked ) => {
   return keys
 }
 
-const getKeyStyles = key => [
-  styles.key,
-  key.pressed ? styles.keyDown : "",
-  !key.unlocked ? styles.locked : "",
-  key.menu ? styles.menuVisible : "",
-].join( " " )
-
-const renderKey = ( { points, keys, toggleKeyMenu, unlockKey, keyCost } ) => key => (
-  <div
-    onMouseLeave={() => toggleKeyMenu( key )}
-    onMouseEnter={() => toggleKeyMenu( key )}
-    key={key}
-    className={getKeyStyles( keys[ key ] )}
-  >
-    <div>
-      {key}
-    </div>
-    { keys[ key ].menu ? (
-      <div className={styles.keyMenu}>
-        <div className={styles.keyMenuTitle}>{key.toString()}</div>
-        <div className={styles.keyMenuPrice}>{roundTo( keyCost, 0 )}</div>
-        <div className={`${ styles.keyBuy } ${ points >= keyCost ? styles.keyAffordable : styles.keyExpensive }`}
-          onClick={() => unlockKey( key )}
-        >
-          BUY
-        </div>
-      </div>
-      ) :
-      null
-    }
-  </div>
-)
+const renderKey = ( params ) => key =>
+  <Key {...params} notifications={params.notifications.get( key )} keyboardKey={key}/>
 
 const renderRow = params => ( row, index ) => (
   <div className={`${ styles.row } ${ styles[ `row_${ index }` ] }`} key={index}>
@@ -83,7 +55,8 @@ const countUnlocked = keys => {
   return res
 }
 
-export default class Keyboard extends Component {
+@notifier()
+class Keyboard extends Component {
 
   props:{
     points: number,
@@ -91,7 +64,9 @@ export default class Keyboard extends Component {
     unlockKey: ( key:string, price:number ) => void,
     unlocked:{
       [key:string]:boolean,
-    }
+    },
+    notify: any,
+    notifications: any,
   }
 
   state = {
@@ -113,8 +88,21 @@ export default class Keyboard extends Component {
 
   keyDown ( event ) {
     const { keys } = this.state
-    const charCode = String.fromCharCode( event.which ).toLowerCase()
+    const { pointsPerAdd, notifications, notify } = this.props
+    const charCode = event.which ? String.fromCharCode( event.which ).toLowerCase() : event
     const key = keys[ charCode ]
+    const notification = fromJS( {
+      text: pointsPerAdd,
+      time: Date.now(),
+      left: Math.random() * 800 - 400,
+      bottom: Math.random() * 800 - 400,
+    } )
+
+    notify(
+      charCode,
+      notification,
+      0, 1000 - ( 100 * ( notifications.get( charCode ) ? notifications.get( charCode ).count() : 0 ) )
+    )
     if ( ~validKeys.indexOf( charCode ) && !key.pressed && key.unlocked ) {
       const { addPoints } = this.props
       this.setState( {
@@ -127,13 +115,13 @@ export default class Keyboard extends Component {
         },
       } )
       addPoints()
+      event.preventDefault && event.preventDefault()
     }
-    event.preventDefault()
   }
 
   keyUp ( event ) {
     const { keys } = this.state
-    const charCode = String.fromCharCode( event.which ).toLowerCase()
+    const charCode = event.which ? String.fromCharCode( event.which ).toLowerCase() : event
     const key = keys[ charCode ]
     if ( ~validKeys.indexOf( charCode ) && key.pressed ) {
       this.setState( {
@@ -146,7 +134,7 @@ export default class Keyboard extends Component {
         },
       } )
     }
-    event.preventDefault()
+    event.preventDefault && event.preventDefault()
   }
   componentWillMount () {
     const { unlocked } = this.props
@@ -178,7 +166,7 @@ export default class Keyboard extends Component {
   }
 
   render () {
-    const { points } = this.props
+    const { points, notifications } = this.props
     const { keys, focused } = this.state
     return (
       <div
@@ -198,12 +186,17 @@ export default class Keyboard extends Component {
           {rows.map( renderRow( {
             points,
             keys,
+            notifications,
             toggleKeyMenu: this.toggleKeyMenu,
             unlockKey: this.unlockKey,
             keyCost: this.keyCost(),
+            keyDown: key => this.keyDown( key ),
+            keyUp: key => this.keyUp( key ),
           } ) ) }
         </div>
       </div>
     )
   }
 }
+
+export default Keyboard

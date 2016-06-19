@@ -6,6 +6,16 @@
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
+  outline-width: 0;
+}
+
+.notification{
+  position: absolute;
+  transform: translate(0, 0);
+  pointer-events: none;
+  z-index: 1000;
+  font-weight: 800;
+  color: #00FF00;
 }
 
 .warning{
@@ -21,11 +31,11 @@
 }
 
 .keys{
-  border: 1px solid gray;
   padding: 15px;
 }
 
 .key{
+  position: relative;
   text-transform: uppercase;
   font-weight: 700;
   font-size: 40px;
@@ -46,6 +56,25 @@
     font-size: 25px;
     width: 45px;
     height: 45px;
+  }
+}
+
+@media screen and (max-width:800px){
+  .key{
+    font-size: 20px;
+    width: 22.5px;
+    height: 22.5px;
+  }
+}
+
+@media screen and (max-width:600px){
+  .key{
+    font-size: 16px;
+    width: 17.5px;
+    height: 17.5px;
+  }
+  .keys{
+    padding: 5px;
   }
 }
 
@@ -110,5 +139,5 @@
 }
 
 .row_2{
-  padding-left: 35px;
+  padding-left: 50px;
 }
