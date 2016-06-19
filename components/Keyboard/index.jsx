@@ -92,7 +92,7 @@ class Keyboard extends Component {
     const charCode = event.which ? String.fromCharCode( event.which ).toLowerCase() : event
     const key = keys[ charCode ]
     const notification = fromJS( {
-      text: pointsPerAdd,
+      text: `${ charCode }`,
       time: Date.now(),
       left: Math.random() * 800 - 400,
       bottom: Math.random() * 800 - 400,
@@ -101,7 +101,7 @@ class Keyboard extends Component {
     notify(
       charCode,
       notification,
-      0, 1000 - ( 100 * ( notifications.get( charCode ) ? notifications.get( charCode ).count() : 0 ) )
+      0, 1500 - ( 50 * ( notifications.get( charCode ) ? notifications.get( charCode ).count() : 0 ) )
     )
     if ( ~validKeys.indexOf( charCode ) && !key.pressed && key.unlocked ) {
       const { addPoints } = this.props
