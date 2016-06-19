@@ -1,10 +1,20 @@
 import React, { Component } from "react"
 import * as styles from "./styles.css"
 import upgrades from "game/upgrades"
+import achievements from "game/achievements"
 import monkeys from "game/monkeys"
-import { roundTo } from "helpers"
+import { roundTo, objectMap } from "helpers"
 
 const upgradePurchased = ( game, upgrade ) => game.getIn( [ "upgrades", upgrade ] ) ? true : false
+
+const achievementRenderer = ( { game } ) => ( { unlocked, title, short } ) => unlocked( game ) ? ( //eslint-disable-line
+  <div
+    className={`${ styles.upgrade }`}
+  >
+    <div className={styles.upgradeName}>{title}</div>
+    <div className={styles.upgradeShort}>{short}</div>
+  </div>
+) : null
 
 const upgradeRenderer = ( props ) => ( upgrade ) => {
   const { game } = props //eslint-disable-line
@@ -66,7 +76,15 @@ export default class Profile extends Component {
             Unlocked upgrades
           </div>
           <div className={styles.list}>
-            {upgrades.map( upgradeRenderer( this.props ) )}
+            { objectMap( upgrades, upgradeRenderer( this.props ) )}
+          </div>
+        </div>
+        <div className={styles.achievements}>
+          <div className={styles.title}>
+            Achievements unlocked
+          </div>
+          <div className={styles.list}>
+            { objectMap( achievements, achievementRenderer( this.props ) )}
           </div>
         </div>
       </div>
